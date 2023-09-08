@@ -40,7 +40,7 @@ do
         MANGANAME=$(echo $MANGA | cut -d ';' -f2 | tr -d '#$*?%&^')
         MANGAPICDIR=$(echo $MANGA | cut -d ';' -f3)
         
-        # TODO Check MANGANAME if exists skip
+        # TODO Check MANGANAME if exists skip or keep, always yes
 
         # Create Download dir, set download url and check how much manga page had, download selected manga poster
         mkdir -p $DOWNDIR/$MANGANAME
@@ -53,7 +53,6 @@ do
         for (( PICSTART=1; PICSTART <= $MAXMANGACOUNT; PICSTART++ )) do
             curl -s $PICTURESURL/$PICSTART.jpg -o $DOWNDIR/$MANGANAME/$PICSTART.jpg
             # TODO Check if downloaded file empty, if empty try png
-            echo hello > /dev/null
         done
     done
    
