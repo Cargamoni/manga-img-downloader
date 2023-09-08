@@ -1,0 +1,13 @@
+# Manga Image Downloader
+
+Using specific url for download manga pictures to specific directory.
+
+Default directory set by current directory and inside assets dir. If you are going to running this script in /home/james it will create /home/james/assets directory and put contents in this directory.
+
+Scripts needs three parameters;
+1 - Site Name
+2 - Site Serach Name
+3 - After search listed maximum manga content
+
+    chmod +x jpg-downloader.sh
+    ./jpg-downloader www.mangasite.com dragon-ball 35
