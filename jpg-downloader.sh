@@ -35,7 +35,7 @@ do
         # Get each manga dir name and picture directory
         echo $MANGA 
         MANGADIR=$(echo $MANGA | cut -d ';' -f1)
-        MANGANAME=$(echo $MANGA | cut -d ';' -f2)
+        MANGANAME=$(echo $MANGA | cut -d ';' -f2 | td -d '#$*?%&^')
         MANGAPICDIR=$(echo $MANGA | cut -d ';' -f3)
         
         # TODO Check MANGANAME if exists skip
