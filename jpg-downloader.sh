@@ -22,6 +22,8 @@ BEGPAG=1
 
 while [ $BEGPAG -lt $PAGING ]
 do
+    echo "## Getting Page $BEGPAG ##"
+    
     # Parse manga dir name and picture location to files
     grep cover $SITESEARCH-page-$BEGPAG.html | grep -v meta | cut -d '"' -f2 > MANGADIR
     grep caption $SITESEARCH-page-$BEGPAG.html | cut -d '>' -f2 | cut -d '<' -f1 | sed 's/-//g' | sed 's/\.//g' | sed 's/ /_/g' > MANGANAME
@@ -35,7 +37,7 @@ do
         # Get each manga dir name and picture directory
         echo $MANGA 
         MANGADIR=$(echo $MANGA | cut -d ';' -f1)
-        MANGANAME=$(echo $MANGA | cut -d ';' -f2 | td -d '#$*?%&^')
+        MANGANAME=$(echo $MANGA | cut -d ';' -f2 | tr -d '#$*?%&^')
         MANGAPICDIR=$(echo $MANGA | cut -d ';' -f3)
         
         # TODO Check MANGANAME if exists skip
@@ -51,24 +53,29 @@ do
         for (( PICSTART=1; PICSTART <= $MAXMANGACOUNT; PICSTART++ )) do
             curl -s $PICTURESURL/$PICSTART.jpg -o $DOWNDIR/$MANGANAME/$PICSTART.jpg
             # TODO Check if downloaded file empty, if empty try png
+            echo hello > /dev/null
         done
     done
-    
+   
+    # Clear left-ofs
+    rm -f MANGADIR MANGANAME MANGAPICLOC $SITESEARCH-page-$BEGPAG.html
     BEGPAG=$(($BEGPAG + 1))
-    # TODO Each founded page must be download and has to be remove after finished downloading
-    # TODO Each page mus be resulted by BEGPAG variable, every page manga content and manga dirs should be downloaded
-    ## RESULT=$( [ ! -e $SITESEARCH-page-1.html ] && curl -s https://$MAINURL/search/$SITESEARCH/ | tee $SITESEARCH-page-1.html | grep -i results | cut -d '-' -f2 | awk '{print $1}')
-    exit 0
+
+    # Iterating page numbers for each manga content  
+    [ ! -e $SITESEARCH-page-$BEGPAG.html ] && curl -s https://$MAINURL/search/$SITESEARCH/?p=$BEGPAG -o $SITESEARCH-page-$BEGPAG.html
+   
+    # Special TODO Progress Bar
 done
 
 
-
-
-
-
-
-
-### DEBUG ###
-# echo https://$MAINURL/search/$SITESEARCH/
+ ### DEBUG ###
+# echo https://$MAINURL/search/$SITESEARCH/?p=$BEGPAG
 # echo Result=$RESULT
 # echo Rounded=`round $RESULT $SITEMAXCONT` 
+
+
+
+
+
+
+
